@@ -39,7 +39,7 @@ public class LoginWindow {
         JLabel imageLabel = new JLabel();
         loginPanel.add(imageLabel);
         imageLabel.setBounds(30, 10, 500, 150);
-        ImageIcon icon = new ImageIcon("images/logo2_tiny_white.png");
+        ImageIcon icon = new ImageIcon("images/login.png");
         Image image = icon.getImage();
         icon.setImage(image.getScaledInstance(400, 120, Image.SCALE_DEFAULT));
         imageLabel.setIcon(icon);

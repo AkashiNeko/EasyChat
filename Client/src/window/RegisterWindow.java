@@ -36,7 +36,7 @@ public class RegisterWindow {
         JLabel imageLabel = new JLabel();
         registerPanel.add(imageLabel);
         imageLabel.setBounds(30, 10, 500, 150);
-        ImageIcon icon = new ImageIcon("images/signup.png");
+        ImageIcon icon = new ImageIcon("images/register.png");
         Image image = icon.getImage();
         icon.setImage(image.getScaledInstance(400, 120, Image.SCALE_DEFAULT));
         imageLabel.setIcon(icon);
