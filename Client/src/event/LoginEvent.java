@@ -43,6 +43,7 @@ public class LoginEvent {
 
         String[] args = ret.split(":");
         if (args.length != 2 || !args[0].equals("true")) {
+            JOptionPane.showMessageDialog(null,  ret + "\n可能是由于服务器未开启导致的，\n请联系管理员：akashineko@qq.com", "服务器异常", JOptionPane.ERROR_MESSAGE);
             return -1;
         }
         ECConfigs.setUserConfig("username", username);
