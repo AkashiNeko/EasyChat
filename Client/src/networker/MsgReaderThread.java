@@ -3,6 +3,7 @@ import src.chat.SystemAlert;
 import src.chat.TextMsg;
 import src.window.MainWindow;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;
@@ -46,7 +47,10 @@ public class MsgReaderThread extends Thread {
                     buffer.put(msg);
                 }
             } catch (Exception e) {
-                break;
+                // 掉线直接退出
+                JOptionPane.showMessageDialog(null,
+                        "与服务器断开连接..", "连接断开", JOptionPane.ERROR_MESSAGE);
+                System.exit(-1);
             }
         }
     }

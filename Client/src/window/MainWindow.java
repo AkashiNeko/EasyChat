@@ -48,8 +48,7 @@ public class MainWindow extends JFrame {
         this.setIconImage(icon);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                // 关闭窗口时
-                connector.sendRequest("quit");
+                // 关闭窗口
                 connector.close();
             }
         });
@@ -298,11 +297,9 @@ public class MainWindow extends JFrame {
             inputField.setText(friendMap.get(friend).getInputBuffer());
 
             //TODO: 点击好友后的操作
-            // System.out.println(friend);
             FriendInfo friendInfo = friendMap.get(friend);
             String lastTime = friendInfo.records.getLastTime();
             String ret = connector.sendRequest("getrecords:" + passwordMD5 + ":" + username + ":" + friend + ":" + lastTime);
-            // System.out.println(ret);
             if (!ret.equals("records:null")) {
                 String[] records = ret.split(":");
                 for (int i = 1; i < records.length; ++i) {
