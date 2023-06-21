@@ -35,7 +35,6 @@ public class Connector {
 
     public String sendRequest(String msg) {
         printWriter.println(msg);
-        // System.out.println("send: " + msg);
         BlockingQueue<String> buffer = msgReaderThread.getBuffer();
         try {
             return buffer.take();

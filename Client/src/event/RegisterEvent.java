@@ -34,7 +34,7 @@ public class RegisterEvent {
 
         // 未知错误
         if (ret.equals("error:unknown")) {
-            JOptionPane.showMessageDialog(null, "未知错误", "未知错误", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "未知错误，请联系管理员：akashineko@qq.com", "未知错误", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 

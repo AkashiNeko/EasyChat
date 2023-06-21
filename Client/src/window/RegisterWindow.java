@@ -5,13 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 
 /**
  * @BelongsProject: EasyChat
  * @FileName: RegisterWindow
  * @Author: Akashi
- * @Version: 1.0
+ * @Version: 1.1
  * @Description: 用户注册窗口
  */
 public class RegisterWindow {
@@ -184,7 +183,7 @@ public class RegisterWindow {
         }
 
         // 注册
-        RegisterEvent event = new RegisterEvent(username, Arrays.toString(password), email);
+        RegisterEvent event = new RegisterEvent(username, new String(password), email);
         boolean success = event.register();
         if (success) {
             // 注册成功后关闭注册窗口，重新打开登录窗口，自动填充用户名和密码
