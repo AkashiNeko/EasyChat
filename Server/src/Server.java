@@ -42,6 +42,8 @@ public class Server {
                     String executeResult = receiveEvent.execute(msg);
                     Logger.println("\033[36mreceive: " + executeResult + "\033[0m");
                     printWriter.println(executeResult);
+                } else {
+                    Logger.println("error: msg is null");
                 }
             } catch (Exception e) {
                 Logger.println("server error: " + e.getMessage());

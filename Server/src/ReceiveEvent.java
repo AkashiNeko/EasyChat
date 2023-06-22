@@ -20,6 +20,11 @@ public class ReceiveEvent {
     public String execute(String msg) {
         String[] args = msg.split(":");
         switch (args[0]) {
+        case "check" -> {
+            if (args.length != 2)
+                return "check:unknown";
+            return this.check(args[1]);
+        }
         case "login" -> {
             // login : password : username
             if (args.length != 3)
@@ -79,6 +84,12 @@ public class ReceiveEvent {
             return "error:unknown_command";
         }
         }
+    }
+
+    public String check(String checkMsg) {
+        if (checkMsg.equals("online"))
+            return "true";
+        return "check:unknown";
     }
 
     public List<String> getOnlineFriends(String username) {

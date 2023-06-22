@@ -202,19 +202,24 @@ public class UserDAO {
         String eid1 = this.getEID(user1);
         String eid2 = this.getEID(user2);
 
-        PreparedStatement statement1 = connection.prepareStatement(
+        // 
+        PreparedStatement statment = connection.prepareStatement(
             "select count(*) from friendship where eid1=? and eid2=?;"
         );
-        statement1.setString(1, eid1);
-        statement1.setString(2, eid2);
-        ResultSet result1 = statement1.executeQuery();
-        result1.next();
-        int count1 = result1.getInt(1);
-        if (count1 > 0) {
-            statement1 = connection.prepareStatement("delete from friendship where eid1=? and eid2=?;");
-            statement1.setString(1, eid1);
-            statement1.setString(2, eid2);
-            int ret = statement1.executeUpdate();
+        statment.setString(1, eid1);
+        statment.setString(2, eid2);
+        ResultSet rs = statment.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+        if (count > 0) {
+            // 删聊天记录
+            statment = connection.prepareStatement("drop table if exists " + getTableName(eid1, eid2));
+            statment.execute();
+            // 删好友关系
+            statment = connection.prepareStatement("delete from friendship where eid1=? and eid2=?;");
+            statment.setString(1, eid1);
+            statment.setString(2, eid2);
+            int ret = statment.executeUpdate();
             if (ret == 1) {
                 Logger.println("delete friendship: \"" + user1 + "\" and \"" + user2 + "\"");
                 // 转发
