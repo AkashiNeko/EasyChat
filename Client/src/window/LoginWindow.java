@@ -44,7 +44,7 @@ public class LoginWindow {
         icon.setImage(image.getScaledInstance(400, 120, Image.SCALE_DEFAULT));
         imageLabel.setIcon(icon);
 
-        // 账号标签
+        // 用户名标签
         JLabel usernameLoginLabel = new JLabel("账号");
         usernameLoginLabel.setFont(new Font("Microsoft YaHei", Font.PLAIN, 20));
         usernameLoginLabel.setForeground(Color.WHITE);
@@ -136,8 +136,8 @@ public class LoginWindow {
         loginFrame.add(loginPanel);
         loginFrame.setVisible(true);
 
-        String localUsername = ECConfigs.getUserConfig("username");
-        String localPasswordMD5 = ECConfigs.getUserConfig("password");
+        String localUsername = ECConfigs.getConfig("username");
+        String localPasswordMD5 = ECConfigs.getConfig("password");
         if (localUsername != null && localPasswordMD5 != null) {
             usernameLoginField.setText(localUsername);
             passwordLoginField.setText("@local_password");
@@ -173,7 +173,7 @@ public class LoginWindow {
 
         String passwordMD5;
         if (password.equals("@local_password")) {
-            passwordMD5 = ECConfigs.getUserConfig("password");
+            passwordMD5 = ECConfigs.getConfig("password");
         } else {
             passwordMD5 = Md5Hash.getMd5(password);
         }

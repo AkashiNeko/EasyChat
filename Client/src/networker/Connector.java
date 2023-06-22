@@ -21,8 +21,14 @@ public class Connector {
     PrintWriter printWriter;
     BufferedReader bufferedReader;
     MsgReaderThread msgReaderThread;
+    static String host;
+
+    public static void setHost(String host) {
+        Connector.host = host;
+    }
+
     public Connector(int port) throws IOException {
-        socket = new Socket("neko.akashi.top", port);
+        socket = new Socket(host, port);
         printWriter = new PrintWriter(socket.getOutputStream(), true);
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         msgReaderThread = new MsgReaderThread(bufferedReader);

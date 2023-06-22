@@ -46,8 +46,8 @@ public class LoginEvent {
             JOptionPane.showMessageDialog(null,  ret + "\n可能是由于服务器未开启导致的，\n请联系管理员：akashineko@qq.com", "服务器异常", JOptionPane.ERROR_MESSAGE);
             return -1;
         }
-        ECConfigs.setUserConfig("username", username);
-        ECConfigs.setUserConfig("password", passwordMD5);
+        ECConfigs.setConfig("username", username);
+        ECConfigs.setConfig("password", passwordMD5);
         return Integer.parseInt(args[1]);
     }
 }

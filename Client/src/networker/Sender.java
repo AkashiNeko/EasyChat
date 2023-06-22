@@ -10,9 +10,18 @@ import java.net.Socket;
  * @Description: 向服务器发送登录和注册请求
  */
 public class Sender {
-    private static final String serverAddress = "neko.akashi.top";
-    private static final int port = 55000;
+    private static String serverAddress;
+    private static int port;
     public Sender() {}
+
+    public static void setHost(String host) {
+        Sender.serverAddress = host;
+    }
+
+    public static void setPort(int port) {
+        Sender.port = port;
+    }
+
     public String send(String msg) {
         try {
             Socket socket = new Socket(serverAddress, port);

@@ -13,7 +13,9 @@ import java.util.Properties;
  */
 public class ECConfigs {
     private static final String CONFIG_FILE_PATH = "C:\\Users\\%s\\easychat.cfg";
-    public static String getUserConfig(String config) {
+    private static String hostName;
+    private static int port;
+    public static String getConfig(String config) {
         String username = System.getProperty("user.name");
         String filePath = String.format(CONFIG_FILE_PATH, username);
         Properties props = new Properties();
@@ -29,10 +31,9 @@ public class ECConfigs {
             return null;
         }
     }
-    public static void setUserConfig(String config, String value) {
+    public static void setConfig(String config, String value) {
         String username = System.getProperty("user.name");
         String filePath = String.format(CONFIG_FILE_PATH, username);
-
         Properties props = new Properties();
         try {
             // 创建文件输入流
@@ -41,10 +42,8 @@ public class ECConfigs {
             props.load(fis);
             // 关闭文件输入流
             fis.close();
-        } catch (IOException ignored) {}
-        // 设置属性值
-        props.setProperty(config, value);
-        try {
+            // 设置属性值
+            props.setProperty(config, value);
             // 创建文件输出流
             FileOutputStream fos = new FileOutputStream(filePath);
             // 将属性写入文件
