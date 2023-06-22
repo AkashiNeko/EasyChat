@@ -29,7 +29,7 @@ public class UserDAO {
             Logger.println("Database connected: User=" + DB_USER);
             PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `user` (`eid` char(12) NOT NULL,`username` varchar(40) NOT NULL, `password` varchar(32) NOT NULL, `email` varchar(255) NOT NULL, `gender` enum('unknown','male','female','other','privary') DEFAULT 'unknown', `birthday` date DEFAULT NULL, `online` tinyint(1) NOT NULL DEFAULT '0',  PRIMARY KEY (`eid`,`username`)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
             statement.execute();
-            statement = connection.prepareStatement("CREATE TABLE `friendship` (`eid1` char(12) NOT NULL, `eid2` char(12) NOT NULL,  `last` datetime DEFAULT NULL,  PRIMARY KEY (`eid1`,`eid2`),  KEY `eid2` (`eid2`),  CONSTRAINT `friendship_ibfk_1` FOREIGN KEY (`eid1`) REFERENCES `user` (`eid`),  CONSTRAINT `friendship_ibfk_2` FOREIGN KEY (`eid2`) REFERENCES `user` (`eid`)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `friendship` (`eid1` char(12) NOT NULL, `eid2` char(12) NOT NULL,  `last` datetime DEFAULT NULL,  PRIMARY KEY (`eid1`,`eid2`),  KEY `eid2` (`eid2`),  CONSTRAINT `friendship_ibfk_1` FOREIGN KEY (`eid1`) REFERENCES `user` (`eid`),  CONSTRAINT `friendship_ibfk_2` FOREIGN KEY (`eid2`) REFERENCES `user` (`eid`)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
             statement.execute();
         } catch (Exception e) {
             Logger.println("Database connect failed: " + e.getMessage());
@@ -336,7 +336,7 @@ public class UserDAO {
     }
 
     private String getTableName(String eid1, String eid2) {
-        if (eid1.compareTo(eid2) == -1)
+        if (eid1.compareTo(eid2) < 0)
             return "chat_" + eid1 + "_" + eid2;
         else
             return "chat_" + eid2 + "_" + eid1;
