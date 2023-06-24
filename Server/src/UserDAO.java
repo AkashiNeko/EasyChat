@@ -13,7 +13,7 @@ import java.util.List;
  * @BelongsProject: EasyChat
  * @FileName: UserDAO
  * @Author: Akashi
- * @Version: 1.1
+ * @Version: 1.2
  * @Description: 数据库访问类
  */
 
@@ -26,11 +26,36 @@ public class UserDAO {
         String DB_PASSWORD = DatabaseConfig.getPassword();
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            Logger.println("Database connected: User=" + DB_USER);
-            PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `user` (`eid` char(12) NOT NULL,`username` varchar(40) NOT NULL, `password` varchar(32) NOT NULL, `email` varchar(255) NOT NULL, `gender` enum('unknown','male','female','other','privary') DEFAULT 'unknown', `birthday` date DEFAULT NULL, `online` tinyint(1) NOT NULL DEFAULT '0',  PRIMARY KEY (`eid`,`username`)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-            statement.execute();
-            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `friendship` (`eid1` char(12) NOT NULL, `eid2` char(12) NOT NULL,  `last` datetime DEFAULT NULL,  PRIMARY KEY (`eid1`,`eid2`),  KEY `eid2` (`eid2`),  CONSTRAINT `friendship_ibfk_1` FOREIGN KEY (`eid1`) REFERENCES `user` (`eid`),  CONSTRAINT `friendship_ibfk_2` FOREIGN KEY (`eid2`) REFERENCES `user` (`eid`)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-            statement.execute();
+            Logger.println("Database connected: user=" + DB_USER);
+            PreparedStatement statement1 = connection.prepareStatement("""
+                CREATE TABLE IF NOT EXISTS `user` (
+                    `eid` char(12) NOT NULL,
+                    `username` varchar(40) NOT NULL,
+                    `password` varchar(32) NOT NULL,
+                    `email` varchar(255) NOT NULL,
+                    `gender` enum('male','female','other','private'),
+                    `birthday` date DEFAULT NULL, PRIMARY KEY (`eid`,`username`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+            """);
+            statement1.execute();
+            PreparedStatement statement2 = connection.prepareStatement("""
+                CREATE TABLE IF NOT EXISTS `friendship` (
+                    `eid1` char(12) NOT NULL,
+                    `eid2` char(12) NOT NULL,
+                    `last` datetime DEFAULT NULL,
+                    PRIMARY KEY (`eid1`,`eid2`),
+                    KEY `eid2` (`eid2`),
+                    CONSTRAINT `foreign_key_eid1` FOREIGN KEY (`eid1`) REFERENCES `user` (`eid`),
+                    CONSTRAINT `foreign_key_eid2` FOREIGN KEY (`eid2`) REFERENCES `user` (`eid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+            """);
+            statement2.execute();
+            PreparedStatement statement3 = connection.prepareStatement("""
+                CREATE TABLE IF NOT EXISTS `total_users` (
+                    `num` int(11) DEFAULT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+            """);
+            statement3.execute();
         } catch (Exception e) {
             Logger.println("Database connect failed: " + e.getMessage());
             System.exit(-1);
@@ -207,23 +232,23 @@ public class UserDAO {
         String eid2 = this.getEID(user2);
 
         // 
-        PreparedStatement statment = connection.prepareStatement(
+        PreparedStatement statement = connection.prepareStatement(
             "select count(*) from friendship where eid1=? and eid2=?;"
         );
-        statment.setString(1, eid1);
-        statment.setString(2, eid2);
-        ResultSet rs = statment.executeQuery();
+        statement.setString(1, eid1);
+        statement.setString(2, eid2);
+        ResultSet rs = statement.executeQuery();
         rs.next();
         int count = rs.getInt(1);
         if (count > 0) {
             // 删聊天记录
-            statment = connection.prepareStatement("drop table if exists " + getTableName(eid1, eid2));
-            statment.execute();
+            statement = connection.prepareStatement("drop table if exists " + getTableName(eid1, eid2));
+            statement.execute();
             // 删好友关系
-            statment = connection.prepareStatement("delete from friendship where eid1=? and eid2=?;");
-            statment.setString(1, eid1);
-            statment.setString(2, eid2);
-            int ret = statment.executeUpdate();
+            statement = connection.prepareStatement("delete from friendship where eid1=? and eid2=?;");
+            statement.setString(1, eid1);
+            statement.setString(2, eid2);
+            int ret = statement.executeUpdate();
             if (ret == 1) {
                 Logger.println("delete friendship: \"" + user1 + "\" and \"" + user2 + "\"");
                 // 转发
@@ -266,15 +291,6 @@ public class UserDAO {
             return "false";
         }
         return "false";
-    }
-
-    public boolean tableNotExists(String tableName) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-            "show tables where Tables_in_easychat=?;"
-        );
-        statement.setString(1, tableName);
-        ResultSet rs = statement.executeQuery();
-        return !rs.next();
     }
 
     public String sendMessage(String username, String target, String base64msg) throws SQLException {

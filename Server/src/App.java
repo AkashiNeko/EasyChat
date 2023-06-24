@@ -4,7 +4,7 @@ package src;
  * @BelongsProject: EasyChat
  * @FileName: APP
  * @Author: Akashi
- * @Version: 1.1
+ * @Version: 1.2
  * @Description: 主类
  */
 public class App {
@@ -17,7 +17,7 @@ public class App {
     }
 
     private static void printWelcome() {
-        System.out.println("+------------ EasyChat Server version 1.1 -----------+");
+        System.out.println("+------------ EasyChat Server version 1.2 -----------+");
         System.out.println("|\033[34;1m     _____                _____ _           _       \033[0m|");
         System.out.println("|\033[34;1m    |  ___|              /  __ \\ |         | |      \033[0m|");
         System.out.println("|\033[34;1m    | |__  __ _ ___ _   _| /  \\/ |__   __ _| |_     \033[0m|");
